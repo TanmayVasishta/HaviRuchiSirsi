@@ -53,7 +53,7 @@ export default function MenuPage() {
                   {t("ವಾರದ ಮೆನು", "Weekly Menu")}
                 </span>
               </div>
-              <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
+              <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-medium leading-[1.3] tracking-[-0.03em] text-brown">
                 <TextReveal>
                   {t(<>ನಮ್ಮ <span className="text-saffron">ಮೆನು</span></>, <>Our <span className="text-saffron">Menu</span></>)}
                 </TextReveal>

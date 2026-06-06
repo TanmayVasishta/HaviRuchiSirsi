@@ -71,7 +71,7 @@ function HeroSection() {
               </span>
             </motion.div>
 
-            <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown mb-0">
+            <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)] font-medium leading-[1.3] tracking-[-0.03em] text-brown mb-0">
               <motion.span
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -268,7 +268,7 @@ function TodayMenuStrip() {
         </MotionReveal>
 
         <TextReveal delay={0.1}>
-          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-3">
+          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.3] tracking-[-0.02em] text-brown mb-3">
             {lang === "kn" ? (
               <>{DAYS_KN[today]}, <span className="text-saffron">{DAYS[today]}</span></>
             ) : (
@@ -356,7 +356,7 @@ function HowItWorks() {
         </MotionReveal>
 
         <TextReveal delay={0.1}>
-          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-12 sm:mb-16">
+          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.3] tracking-[-0.02em] text-brown mb-12 sm:mb-16">
             {t("3 ಸುಲಭ ಹಂತಗಳು", "3 Easy Steps")} <span className="text-saffron">→</span>
           </h2>
         </TextReveal>
@@ -426,7 +426,7 @@ function ServeSection() {
         </MotionReveal>
 
         <TextReveal delay={0.1}>
-          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-10 sm:mb-14">
+          <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.3] tracking-[-0.02em] text-brown mb-10 sm:mb-14">
             {t(<>ನಾವು <span className="text-saffron">ಯಾರಿಗೆ</span> ಸೇವೆ ನೀಡುತ್ತೇವೆ</>, <>Who We <span className="text-saffron">Serve</span></>)}
           </h2>
         </TextReveal>

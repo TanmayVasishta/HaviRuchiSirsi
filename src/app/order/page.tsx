@@ -149,7 +149,7 @@ function OrderForm() {
             <ArrowLeft size={14} /> {t("ಮೆನು ಗೆ ಹೋಗಿ", "Back to Menu")}
           </Link>
         </MagneticWrapper>
-        <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
+        <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.3] tracking-[-0.03em] text-brown">
           {t(<>ಆರ್ಡರ್ <span className="text-saffron">ಮಾಡಿ</span></>, <>Place <span className="text-saffron">Order</span></>)}
         </h1>
         <p className="text-sm text-brown-light/50 mt-2 mb-8">

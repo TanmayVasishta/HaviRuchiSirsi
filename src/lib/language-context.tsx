@@ -11,13 +11,13 @@ interface LangContextType {
 }
 
 const LangContext = createContext<LangContextType>({
-  lang: "kn",
+  lang: "en",
   toggle: () => {},
-  t: (kn) => kn,
+  t: (_kn, en) => en,
 });
 
 export function LangProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Lang>("kn");
+  const [lang, setLang] = useState<Lang>("en");
 
   // Restore saved language on mount
   useEffect(() => {

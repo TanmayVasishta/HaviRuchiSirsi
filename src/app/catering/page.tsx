@@ -101,7 +101,7 @@ export default function CateringPage() {
                 <ArrowLeft size={14} /> {t("ಮನೆಗೆ ಹೋಗಿ", "Back to Home")}
               </Link>
             </MagneticWrapper>
-            <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
+            <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.3] tracking-[-0.03em] text-brown">
               {t(<>ಕೇಟರಿಂಗ್ <span className="text-saffron">ವಿಚಾರಣೆ</span></>, <>Catering <span className="text-saffron">Enquiry</span></>)}
             </h1>
             <p className="text-sm text-brown-light/50 mt-2">
