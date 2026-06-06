@@ -9,7 +9,7 @@ import { Navbar, BottomNav } from "@/components/navbar";
 import { WhatsAppIcon } from "@/components/icons";
 import { useLang } from "@/lib/language-context";
 import { whatsappOrder } from "@/lib/menu-data";
-import { motion, FlipNumber, MorphButton } from "@/components/motion";
+import { motion, FlipNumber, MorphButton, MagneticWrapper } from "@/components/motion";
 
 const EVENT_TYPES = [
   { value: "wedding", kn: "ಮದುವೆ", en: "Wedding", icon: "💍" },
@@ -74,12 +74,14 @@ export default function CateringPage() {
             <p className="text-sm text-brown-light/40 mb-6">
               {t("24 ಗಂಟೆಯೊಳಗೆ ನಾವು ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸುತ್ತೇವೆ.", "We'll get back to you with a quote within 24 hours.")}
             </p>
-            <Link
-              href="/"
-              className="block bg-maroon text-white rounded-full py-3 font-medium hover:bg-maroon-light transition-colors"
-            >
-              {t("← ಮನೆಗೆ ಹೋಗಿ", "← Go Home")}
-            </Link>
+            <MagneticWrapper className="w-full">
+              <Link
+                href="/"
+                className="block bg-maroon text-white rounded-full py-3 font-medium hover:bg-maroon-light transition-colors w-full"
+              >
+                {t("← ಮನೆಗೆ ಹೋಗಿ", "← Go Home")}
+              </Link>
+            </MagneticWrapper>
           </Card>
         </main>
         <BottomNav />
@@ -94,9 +96,11 @@ export default function CateringPage() {
         <div className="max-w-3xl mx-auto px-5 sm:px-8">
           {/* Header */}
           <div className="mb-8">
-            <Link href="/" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-4">
-              <ArrowLeft size={14} /> {t("ಮನೆಗೆ ಹೋಗಿ", "Back to Home")}
-            </Link>
+            <MagneticWrapper>
+              <Link href="/" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-4 px-2 py-1">
+                <ArrowLeft size={14} /> {t("ಮನೆಗೆ ಹೋಗಿ", "Back to Home")}
+              </Link>
+            </MagneticWrapper>
             <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
               {t(<>ಕೇಟರಿಂಗ್ <span className="text-saffron">ವಿಚಾರಣೆ</span></>, <>Catering <span className="text-saffron">Enquiry</span></>)}
             </h1>
@@ -252,23 +256,25 @@ export default function CateringPage() {
 
             {/* Submit */}
             <div className="relative w-full flex justify-center mt-4">
-              <MorphButton
-                type="submit"
-                disabled={!eventType || !date || !name || !phone || submitting}
-                isSubmitted={submitted}
-                isSubmitting={submitting}
-                successText={t("ವಿಚಾರಣೆ ಕಳಿಸಲಾಗಿದೆ!", "Enquiry Sent!")}
-                className="group relative w-full bg-forest hover:bg-forest-light disabled:bg-brown-light/20 disabled:cursor-not-allowed text-white font-semibold rounded-full py-3.5 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-forest/20 overflow-hidden"
-              >
-                <WhatsAppIcon size={20} />
-                <div className="text-roll-container relative overflow-hidden h-[20px]">
-                  <div className="text-roll-inner group-hover:-translate-y-[20px] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                    <span className="h-[20px] flex items-center">{t("WhatsApp ನಲ್ಲಿ ವಿಚಾರಣೆ ಕಳಿಸಿ", "Send Enquiry via WhatsApp")}</span>
-                    <span className="h-[20px] flex items-center text-cream">{t("Send Enquiry via WhatsApp", "WhatsApp ನಲ್ಲಿ ವಿಚಾರಣೆ ಕಳಿಸಿ")}</span>
+              <MagneticWrapper className="w-full">
+                <MorphButton
+                  type="submit"
+                  disabled={!eventType || !date || !name || !phone || submitting}
+                  isSubmitted={submitted}
+                  isSubmitting={submitting}
+                  successText={t("ವಿಚಾರಣೆ ಕಳಿಸಲಾಗಿದೆ!", "Enquiry Sent!")}
+                  className="group relative w-full bg-forest hover:bg-forest-light disabled:bg-brown-light/20 disabled:cursor-not-allowed text-white font-semibold rounded-full py-3.5 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-forest/20 overflow-hidden"
+                >
+                  <WhatsAppIcon size={20} />
+                  <div className="text-roll-container relative overflow-hidden h-[20px]">
+                    <div className="text-roll-inner group-hover:-translate-y-[20px] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                      <span className="h-[20px] flex items-center">{t("WhatsApp ನಲ್ಲಿ ವಿಚಾರಣೆ ಕಳಿಸಿ", "Send Enquiry via WhatsApp")}</span>
+                      <span className="h-[20px] flex items-center text-cream">{t("Send Enquiry via WhatsApp", "WhatsApp ನಲ್ಲಿ ವಿಚಾರಣೆ ಕಳಿಸಿ")}</span>
+                    </div>
                   </div>
-                </div>
-                <ArrowRight size={16} className="transition-transform duration-500 group-hover:-rotate-45" />
-              </MorphButton>
+                  <ArrowRight size={16} className="transition-transform duration-500 group-hover:-rotate-45" />
+                </MorphButton>
+              </MagneticWrapper>
             </div>
           </form>
         </div>

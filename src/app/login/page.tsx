@@ -7,7 +7,7 @@ import { Phone, ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Navbar, BottomNav } from "@/components/navbar";
 import { useLang } from "@/lib/language-context";
-import { MotionReveal, PageTransition, motion } from "@/components/motion";
+import { MotionReveal, PageTransition, motion, MagneticWrapper } from "@/components/motion";
 import { springBouncy } from "@/lib/animations";
 
 export default function LoginPage() {
@@ -33,9 +33,11 @@ export default function LoginPage() {
       <PageTransition>
         <main className="pt-20 pb-24 md:pb-10 min-h-screen flex items-center justify-center px-5">
           <div className="w-full max-w-sm">
-            <Link href="/" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-6">
-              <ArrowLeft size={14} /> {t("ಮನೆಗೆ ಹೋಗಿ", "Back to Home")}
-            </Link>
+            <MagneticWrapper>
+              <Link href="/" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-6 px-2 py-1">
+                <ArrowLeft size={14} /> {t("ಮನೆಗೆ ಹೋಗಿ", "Back to Home")}
+              </Link>
+            </MagneticWrapper>
 
             <MotionReveal type="scale">
               <Card className="p-8 border-0 shadow-lg text-center">
@@ -73,13 +75,15 @@ export default function LoginPage() {
                         required
                       />
                     </div>
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      type="submit"
-                      className="w-full bg-maroon hover:bg-maroon-light text-white rounded-full py-3 font-medium transition-colors"
-                    >
-                      {t("OTP ಕಳಿಸಿ", "Send OTP")}
-                    </motion.button>
+                    <MagneticWrapper className="w-full">
+                      <motion.button
+                        whileTap={{ scale: 0.95 }}
+                        type="submit"
+                        className="w-full bg-maroon hover:bg-maroon-light text-white rounded-full py-3 font-medium transition-colors"
+                      >
+                        {t("OTP ಕಳಿಸಿ", "Send OTP")}
+                      </motion.button>
+                    </MagneticWrapper>
                   </motion.form>
                 ) : (
                   <motion.form
@@ -102,13 +106,15 @@ export default function LoginPage() {
                       className="w-full px-4 py-3 rounded-xl bg-cream border border-cream-dark focus:border-saffron focus:ring-1 focus:ring-saffron/30 outline-none transition-all text-sm text-center tracking-[0.5em] text-lg"
                       required
                     />
-                    <motion.button
-                      whileTap={{ scale: 0.95 }}
-                      type="submit"
-                      className="w-full bg-saffron hover:bg-saffron-dark text-white rounded-full py-3 font-medium transition-colors"
-                    >
-                      {t("ಲಾಗಿನ್ ಮಾಡಿ", "Verify & Login")}
-                    </motion.button>
+                    <MagneticWrapper className="w-full">
+                      <motion.button
+                        whileTap={{ scale: 0.95 }}
+                        type="submit"
+                        className="w-full bg-saffron hover:bg-saffron-dark text-white rounded-full py-3 font-medium transition-colors"
+                      >
+                        {t("ಲಾಗಿನ್ ಮಾಡಿ", "Verify & Login")}
+                      </motion.button>
+                    </MagneticWrapper>
                     <button
                       type="button"
                       onClick={() => setStep("phone")}

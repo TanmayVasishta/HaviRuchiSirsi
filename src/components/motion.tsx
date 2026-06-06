@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import {
@@ -440,6 +440,398 @@ export function BottomNavItem({ href, icon, label, isActive }: { href: string; i
       </motion.span>
       <span className={`text-[10px] font-medium transition-colors ${isActive ? "text-maroon" : ""}`}>{label}</span>
     </Link>
+  );
+}
+
+// ─── CUSTOM CURSOR ───
+export function CustomCursor() {
+  const [isTouch, setIsTouch] = useState(true);
+  const mouseX = useMotionValue(-100);
+  const mouseY = useMotionValue(-100);
+  
+  const springX = useSpring(mouseX, { stiffness: 500, damping: 28 });
+  const springY = useSpring(mouseY, { stiffness: 500, damping: 28 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(pointer: fine)").matches) {
+      setIsTouch(false);
+    }
+    
+    const moveCursor = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a') || target.closest('button') || target.closest('input')) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
+
+    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mouseover", handleMouseOver);
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
+    };
+  }, [mouseX, mouseY]);
+
+  if (isTouch) return null;
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 w-4 h-4 rounded-full bg-maroon/40 pointer-events-none z-[9999] mix-blend-multiply flex items-center justify-center backdrop-blur-sm"
+      style={{ x: springX, y: springY, translateX: "-50%", translateY: "-50%" }}
+      animate={{
+        scale: isHovering ? 2.5 : 1,
+        backgroundColor: isHovering ? "rgba(123, 28, 28, 0.1)" : "rgba(123, 28, 28, 0.4)",
+      }}
+      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+    >
+      {isHovering && <div className="w-1 h-1 bg-maroon rounded-full" />}
+    </motion.div>
+  );
+}
+
+// ─── TILT CARD ───
+export function TiltCard({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const reduced = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x, { stiffness: 300, damping: 20 });
+  const mouseYSpring = useSpring(y, { stiffness: 300, damping: 20 });
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reduced) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
+  };
+
+  const handleMouseLeave = () => { x.set(0); y.set(0); };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      className={`relative ${className}`}
+    >
+      <div style={{ transform: "translateZ(30px)" }}>
+        {children}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── FLOATING PARTICLES ───
+export function FloatingParticles({ count = 10, className = "" }: { count?: number; className?: string }) {
+  const reduced = useReducedMotion();
+  if (reduced) return null;
+
+  return (
+    <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full bg-saffron/30 blur-[2px]"
+          style={{
+            width: Math.random() * 20 + 10,
+            height: Math.random() * 20 + 10,
+            left: `${Math.random() * 100}%`,
+            top: `${100 + Math.random() * 20}%`,
+          }}
+          animate={{
+            y: [0, -800],
+            x: [0, Math.random() * 100 - 50],
+            opacity: [0, 0.8, 0],
+            rotate: [0, 180],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 15,
+            repeat: Infinity,
+            delay: Math.random() * 10,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ─── MAGNETIC WRAPPER ───
+export function MagneticWrapper({ children, className = "" }: { children: ReactNode; className?: string }) {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reduced || !ref.current) return;
+    const { clientX, clientY } = e;
+    const { left, top, width, height } = ref.current.getBoundingClientRect();
+    const centerX = left + width / 2;
+    const centerY = top + height / 2;
+    setPosition({ x: (clientX - centerX) * 0.2, y: (clientY - centerY) * 0.2 });
+  };
+
+  const handleMouseLeave = () => setPosition({ x: 0, y: 0 });
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
+      className={`inline-block ${className}`}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── STEAM EFFECT (food aroma) ───
+export function SteamEffect({ className = "" }: { className?: string }) {
+  const reduced = useReducedMotion();
+  if (reduced) return null;
+
+  return (
+    <div className={`absolute pointer-events-none ${className}`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div
+          key={i}
+          className="steam-line"
+          style={{
+            left: `${20 + i * 15}%`,
+            animationDelay: `${i * 0.5}s`,
+            animationDuration: `${2 + Math.random() * 1.5}s`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// ─── INFINITE MARQUEE ───
+export function InfiniteMarquee({
+  children,
+  className = "",
+  speed = 30,
+  direction = "left",
+}: {
+  children: ReactNode;
+  className?: string;
+  speed?: number;
+  direction?: "left" | "right";
+}) {
+  const reduced = useReducedMotion();
+
+  return (
+    <div className={`overflow-hidden ${className}`}>
+      <div
+        className="marquee-track"
+        style={{
+          animationDuration: `${speed}s`,
+          animationDirection: direction === "right" ? "reverse" : "normal",
+          animationPlayState: reduced ? "paused" : "running",
+        }}
+      >
+        {children}
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ─── GLOW CARD (cursor-following glow) ───
+export function GlowCard({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty("--mouse-x", `${x}px`);
+    e.currentTarget.style.setProperty("--mouse-y", `${y}px`);
+  };
+
+  return (
+    <div
+      className={`glow-card ${className}`}
+      onMouseMove={handleMouseMove}
+    >
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
+}
+
+// ─── SCROLL-VELOCITY TEXT ───
+export function ScrollVelocityText({
+  text,
+  className = "",
+}: {
+  text: string;
+  className?: string;
+}) {
+  const { scrollY } = useScroll();
+  const baseX = useMotionValue(0);
+  const scrollVelocity = useTransform(scrollY, [0, 1000], [0, 5]);
+
+  useEffect(() => {
+    let frame: number;
+    let xPos = 0;
+    const tick = () => {
+      const velocity = scrollVelocity.get();
+      xPos -= 0.5 + velocity * 0.3;
+      if (xPos < -50) xPos = 0;
+      baseX.set(xPos);
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [baseX, scrollVelocity]);
+
+  const x = useTransform(baseX, (v) => `${v}%`);
+
+  return (
+    <div className={`overflow-hidden whitespace-nowrap ${className}`}>
+      <motion.div className="inline-flex" style={{ x }}>
+        {Array.from({ length: 4 }).map((_, i) => (
+          <span key={i} className="inline-block mx-8">
+            {text}
+          </span>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── TEXT REVEAL (clip-path wipe) ───
+export function TextReveal({
+  children,
+  className = "",
+  delay = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.unobserve(el); } },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={className}>
+      <motion.div
+        initial={{ clipPath: "inset(0 100% 0 0)" }}
+        animate={visible ? { clipPath: "inset(0 0% 0 0)" } : {}}
+        transition={{ duration: 0.8, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      >
+        {children}
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── WAVE SECTION DIVIDER ───
+export function WaveDivider({
+  color = "#FFF8F0",
+  flip = false,
+  className = "",
+}: {
+  color?: string;
+  flip?: boolean;
+  className?: string;
+}) {
+  return (
+    <div className={`wave-divider ${flip ? "rotate-180" : ""} ${className}`}>
+      <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <motion.path
+          d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,60 L0,60 Z"
+          fill={color}
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        />
+      </svg>
+    </div>
+  );
+}
+
+// ─── STAGGERED SCALE ENTRANCE ───
+export function StaggeredEntrance({
+  children,
+  className = "",
+  stagger = 0.08,
+}: {
+  children: ReactNode;
+  className?: string;
+  stagger?: number;
+}) {
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: stagger } },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+export function StaggeredItem({
+  children,
+  className = "",
+}: {
+  children: ReactNode;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, scale: 0.8, y: 30, rotate: -3 },
+        visible: {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          rotate: 0,
+          transition: { type: "spring", stiffness: 200, damping: 15 },
+        },
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
   );
 }
 

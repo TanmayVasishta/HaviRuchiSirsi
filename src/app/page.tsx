@@ -10,7 +10,9 @@ import { WhatsAppIcon } from "@/components/icons";
 import {
   MotionReveal, MotionStagger, MotionItem, MotionLetters, MotionCard,
   MotionCounter, ScrollProgress, PageTransition, motion,
-  ParallaxSection, ShimmerImage
+  ParallaxSection, ShimmerImage, TiltCard, FloatingParticles, MagneticWrapper,
+  SteamEffect, InfiniteMarquee, GlowCard, TextReveal, WaveDivider,
+  StaggeredEntrance, StaggeredItem,
 } from "@/components/motion";
 import { useLang } from "@/lib/language-context";
 import { springBouncy, pathDrawVariant, fadeLeft } from "@/lib/animations";
@@ -43,7 +45,8 @@ function HeroSection() {
 
   return (
     <section className="relative overflow-hidden pt-20 sm:pt-24 pb-10 sm:pb-0">
-      <div className="absolute inset-0 bg-gradient-to-b from-cream via-[#FFF5E8] to-cream" />
+      <div className="absolute inset-0 bg-gradient-to-b from-cream/0 via-[#FFF5E8]/60 to-cream/0" />
+      <FloatingParticles count={15} />
       <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
@@ -69,10 +72,14 @@ function HeroSection() {
             </motion.div>
 
             <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] sm:text-[clamp(2.5rem,5vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown mb-0">
-              <MotionLetters
-                text={t("ಅಪ್ಪಟ ಹವ್ಯಕರ", "Authentic Havyaka")}
-                className="text-maroon"
-              />
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="text-shimmer inline-block"
+              >
+                {t("ಅಪ್ಪಟ ಹವ್ಯಕರ", "Authentic Havyaka")}
+              </motion.span>
               <br className="hidden sm:block" />
               <span className="sm:hidden"> </span>
               <motion.span
@@ -111,29 +118,33 @@ function HeroSection() {
               transition={{ delay: 1.3, ...springBouncy }}
               className="mt-8 sm:mt-12 flex flex-col sm:flex-row gap-4 sm:gap-5"
             >
-              <Link
-                href="/order"
-                className="group bg-saffron hover:bg-saffron-dark text-white text-[13px] sm:text-[14px] font-medium rounded-full pl-5 sm:pl-6 pr-2 py-2 inline-flex items-center gap-3 transition-all duration-300 shadow-lg shadow-saffron/20 hover:shadow-xl hover:shadow-saffron/30"
-              >
-                <div className="text-roll-container">
-                  <div className="text-roll-inner">
-                    <span className="h-[20px] flex items-center">{t("ಆರ್ಡರ್ ಮಾಡಿ", "Order Now")}</span>
-                    <span className="h-[20px] flex items-center">{t("Order Now", "Place Order")}</span>
+              <MagneticWrapper>
+                <Link
+                  href="/order"
+                  className="group bg-saffron hover:bg-saffron-dark text-white text-[13px] sm:text-[14px] font-medium rounded-full pl-5 sm:pl-6 pr-2 py-2 inline-flex items-center gap-3 transition-all duration-300 shadow-lg shadow-saffron/20 hover:shadow-xl hover:shadow-saffron/30"
+                >
+                  <div className="text-roll-container">
+                    <div className="text-roll-inner">
+                      <span className="h-[20px] flex items-center">{t("ಆರ್ಡರ್ ಮಾಡಿ", "Order Now")}</span>
+                      <span className="h-[20px] flex items-center">{t("Order Now", "Place Order")}</span>
+                    </div>
                   </div>
-                </div>
-                <span className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
-                  <ArrowRight size={16} />
-                </span>
-              </Link>
-              <Link
+                  <span className="w-7 h-7 sm:w-8 sm:h-8 bg-white/20 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
+                    <ArrowRight size={16} />
+                  </span>
+                </Link>
+              </MagneticWrapper>
+              <MagneticWrapper>
+                <Link
                 href="/menu"
                 className="text-[13px] sm:text-[14px] font-medium text-brown bg-white rounded-full px-6 py-2.5 inline-flex items-center gap-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300"
               >
                 📋 {t("ಮೆನು ನೋಡಿ", "View Menu")}
-                <Badge variant="secondary" className="text-[10px] bg-maroon text-white px-1.5 py-0.5 rounded">
-                  {t("ವಾರದ", "Weekly")}
-                </Badge>
-              </Link>
+                  <Badge variant="secondary" className="text-[10px] bg-maroon text-white px-1.5 py-0.5 rounded">
+                    {t("ವಾರದ", "Weekly")}
+                  </Badge>
+                </Link>
+              </MagneticWrapper>
             </motion.div>
           </div>
 
@@ -145,7 +156,8 @@ function HeroSection() {
             className="lg:flex-1 flex items-center justify-center pb-24 sm:pb-16 lg:pb-0"
           >
             <div className="relative w-full max-w-md lg:max-w-lg xl:max-w-xl">
-              <div className="rounded-3xl overflow-hidden bg-gradient-to-br from-[#FFFAF3] to-[#FFF0DD] p-4 sm:p-6 shadow-xl">
+              <div className="rounded-3xl overflow-hidden bg-gradient-to-br from-[#FFFAF3] to-[#FFF0DD] p-4 sm:p-6 shadow-xl relative">
+                <SteamEffect className="-top-4 left-0 right-0 h-24 z-10" />
                 <ShimmerImage
                   src="/images/thali.png"
                   alt={t("ಬಾಳೆ ಎಲೆ ಊಟ", "Banana Leaf Thali")}
@@ -158,7 +170,7 @@ function HeroSection() {
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-3 -right-3 bg-maroon text-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center shadow-lg"
+                className="absolute -top-3 -right-3 bg-maroon text-white rounded-full w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center shadow-lg badge-glow"
               >
                 <div className="text-center">
                   <p className="text-[10px] sm:text-xs font-bold leading-tight">100%</p>
@@ -174,6 +186,35 @@ function HeroSection() {
   );
 }
 
+function MarqueeBanner() {
+  const { t } = useLang();
+  const items = [
+    { kn: "🍃 ಶುದ್ಧ ಸಸ್ಯಾಹಾರ", en: "🍃 100% Vegetarian" },
+    { kn: "🏠 ಮನೆ ಅಡುಗೆ ರುಚಿ", en: "🏠 Home-cooked Taste" },
+    { kn: "🚚 ಬಾಗಿಲಿಗೆ ಡೆಲಿವರಿ", en: "🚚 Door Delivery" },
+    { kn: "📅 ವಾರದ ಮೆನು", en: "📅 Weekly Menu" },
+    { kn: "🪔 ಸಾಂಪ್ರದಾಯಿಕ ಹವ್ಯಕ", en: "🪔 Traditional Havyaka" },
+    { kn: "⏰ ಸಮಯಕ್ಕೆ ಸರಿಯಾಗಿ", en: "⏰ Always On Time" },
+    { kn: "💛 ಪ್ರೀತಿಯಿಂದ ಮಾಡಿದ", en: "💛 Made With Love" },
+    { kn: "📍 ಶಿರಸಿ ನಗರ", en: "📍 Sirsi City" },
+  ];
+
+  return (
+    <section className="bg-maroon py-4 overflow-hidden">
+      <InfiniteMarquee speed={25}>
+        <div className="flex items-center gap-8 px-4">
+          {items.map((item, i) => (
+            <span key={i} className="text-cream/80 text-sm sm:text-base font-medium whitespace-nowrap flex items-center gap-2">
+              {t(item.kn, item.en)}
+              <span className="text-saffron/60">·</span>
+            </span>
+          ))}
+        </div>
+      </InfiniteMarquee>
+    </section>
+  );
+}
+
 function FoodImageStrip() {
   const { t } = useLang();
   const meals: { type: MealType; img: string }[] = [
@@ -183,26 +224,28 @@ function FoodImageStrip() {
   ];
 
   return (
-    <section className="bg-white py-10 sm:py-14 overflow-hidden">
+    <section className="bg-white/60 py-10 sm:py-14 overflow-hidden">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
         <MotionStagger stagger={0.15} className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {meals.map(({ type, img }) => {
             const info = MEAL_LABELS[type];
             return (
               <MotionItem key={type}>
-                <MotionCard className="group text-center cursor-pointer">
-                  <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#FFFAF3] to-[#FFF5E8] p-4 sm:p-6">
-                    <ShimmerImage
-                      src={img}
-                      alt={info.en}
-                      width={600}
-                      height={400}
-                      imageClassName="w-full h-auto object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700"
-                    />
-                  </div>
-                  <h3 className="mt-4 text-lg font-semibold text-brown">{t(info.kn, info.en)}</h3>
-                  <p className="text-sm text-brown-light/50">{info.time}</p>
-                </MotionCard>
+                <GlowCard className="rounded-2xl">
+                  <MotionCard className="group text-center cursor-pointer">
+                    <div className="relative rounded-2xl overflow-hidden bg-gradient-to-b from-[#FFFAF3] to-[#FFF5E8] p-4 sm:p-6">
+                      <ShimmerImage
+                        src={img}
+                        alt={info.en}
+                        width={600}
+                        height={400}
+                        imageClassName="w-full h-auto object-contain mix-blend-multiply group-hover:scale-110 group-hover:rotate-2 transition-all duration-700"
+                      />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-brown">{t(info.kn, info.en)}</h3>
+                    <p className="text-sm text-brown-light/50">{info.time}</p>
+                  </MotionCard>
+                </GlowCard>
               </MotionItem>
             );
           })}
@@ -218,13 +261,13 @@ function TodayMenuStrip() {
   const meals: MealType[] = ["breakfast", "lunch", "dinner"];
 
   return (
-    <section className="bg-cream pt-12 sm:pt-16 lg:pt-24 pb-10 sm:pb-14">
+    <section className="bg-cream/60 pt-12 sm:pt-16 lg:pt-24 pb-10 sm:pb-14">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
         <MotionReveal type="fade-right">
           <SectionBadge num="1" label={t("ಇಂದಿನ ಮೆನು", "Today's Menu")} />
         </MotionReveal>
 
-        <MotionReveal type="fade-up" delay={0.1}>
+        <TextReveal delay={0.1}>
           <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-3">
             {lang === "kn" ? (
               <>{DAYS_KN[today]}, <span className="text-saffron">{DAYS[today]}</span></>
@@ -235,7 +278,7 @@ function TodayMenuStrip() {
           <p className="text-sm text-brown-light/50 mb-8 sm:mb-12">
             {t("ಪ್ರತಿ ದಿನ ತಾಜಾ ಮೆನು", "Fresh menu auto-updated every day")}
           </p>
-        </MotionReveal>
+        </TextReveal>
 
         <MotionStagger stagger={0.2} className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
           {meals.map((meal) => {
@@ -243,6 +286,7 @@ function TodayMenuStrip() {
             const items = MENU[meal][today];
             return (
               <motion.div key={meal} variants={fadeLeft} whileTap={{ scale: [1, 1.05, 1], transition: { duration: 0.2 } }} className="will-change-transform">
+                <GlowCard className="rounded-2xl">
                 <MotionCard>
                   <Card className="group overflow-hidden border-0 shadow-md">
                     <div className="relative h-44 sm:h-52 overflow-hidden bg-gradient-to-b from-[#FFFAF3] to-[#FFF5E8]">
@@ -286,6 +330,7 @@ function TodayMenuStrip() {
                     </div>
                   </Card>
                 </MotionCard>
+                </GlowCard>
               </motion.div>
             );
           })}
@@ -310,20 +355,25 @@ function HowItWorks() {
           <SectionBadge num="2" label={t("ಹೇಗೆ ಆರ್ಡರ್ ಮಾಡುವುದು?", "How to Order")} />
         </MotionReveal>
 
-        <MotionReveal type="blur" delay={0.1}>
+        <TextReveal delay={0.1}>
           <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-12 sm:mb-16">
             {t("3 ಸುಲಭ ಹಂತಗಳು", "3 Easy Steps")} <span className="text-saffron">→</span>
           </h2>
-        </MotionReveal>
+        </TextReveal>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {steps.map((s, i) => (
             <MotionReveal key={i} type={s.anim} delay={i * 0.2}>
+              <GlowCard className="rounded-2xl">
               <MotionCard className="relative group">
                 <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm">
-                  <div className="w-12 h-12 rounded-full bg-maroon/10 flex items-center justify-center mb-5">
+                  <motion.div
+                    className="w-12 h-12 rounded-full bg-maroon/10 flex items-center justify-center mb-5"
+                    whileHover={{ scale: 1.2, rotate: 10 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                  >
                     <span className="text-2xl">{s.icon}</span>
-                  </div>
+                  </motion.div>
                   <div className="text-saffron text-xs font-bold mb-2">{t(`ಹಂತ ${i + 1}`, `STEP ${i + 1}`)}</div>
                   <h3 className="text-xl font-semibold text-brown mb-1">{t(s.kn, s.en)}</h3>
                   <p className="text-sm text-brown-light/50">{t(s.descKn, s.descEn)}</p>
@@ -350,6 +400,7 @@ function HowItWorks() {
                   </div>
                 )}
               </MotionCard>
+              </GlowCard>
             </MotionReveal>
           ))}
         </div>
@@ -368,28 +419,36 @@ function ServeSection() {
   ];
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24 px-5 sm:px-8 lg:px-12">
+    <section className="bg-white/60 py-16 sm:py-20 lg:py-24 px-5 sm:px-8 lg:px-12">
       <div className="max-w-[1440px] mx-auto text-center">
         <MotionReveal type="fade-right">
           <SectionBadge num="3" label={t("ಯಾರಿಗೆ ಸೇವೆ?", "Who We Serve")} />
         </MotionReveal>
 
-        <MotionReveal type="blur" delay={0.1}>
+        <TextReveal delay={0.1}>
           <h2 className="text-[clamp(1.5rem,4vw,3rem)] font-medium leading-[1.12] tracking-[-0.02em] text-brown mb-10 sm:mb-14">
             {t(<>ನಾವು <span className="text-saffron">ಯಾರಿಗೆ</span> ಸೇವೆ ನೀಡುತ್ತೇವೆ</>, <>Who We <span className="text-saffron">Serve</span></>)}
           </h2>
-        </MotionReveal>
+        </TextReveal>
 
         <MotionStagger stagger={0.12} className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {segments.map((s) => (
             <MotionItem key={s.en}>
-              <MotionCard>
-                <Card className="p-5 sm:p-6 border-0 shadow-sm group text-center">
-                  <span className="text-4xl sm:text-5xl block mb-3 group-hover:scale-110 transition-transform duration-300">{s.icon}</span>
-                  <h3 className="font-semibold text-brown text-sm sm:text-base">{t(s.kn, s.en)}</h3>
-                  <p className="text-xs sm:text-sm text-brown-light/60 mt-2">{t(s.descKn, s.descEn)}</p>
-                </Card>
-              </MotionCard>
+              <GlowCard className="rounded-2xl h-full">
+                <TiltCard>
+                  <Card className="p-5 sm:p-6 border-0 shadow-sm group text-center h-full">
+                    <motion.span
+                      className="text-4xl sm:text-5xl block mb-3"
+                      whileHover={{ scale: 1.3, rotate: [0, -10, 10, 0] }}
+                      transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                    >
+                      {s.icon}
+                    </motion.span>
+                    <h3 className="font-semibold text-brown text-sm sm:text-base">{t(s.kn, s.en)}</h3>
+                    <p className="text-xs sm:text-sm text-brown-light/60 mt-2">{t(s.descKn, s.descEn)}</p>
+                  </Card>
+                </TiltCard>
+              </GlowCard>
             </MotionItem>
           ))}
         </MotionStagger>
@@ -405,6 +464,7 @@ function CateringBanner() {
       <div className="max-w-[1440px] mx-auto">
         <MotionReveal type="scale">
           <div className="bg-maroon rounded-2xl sm:rounded-3xl relative overflow-hidden">
+            <FloatingParticles count={6} className="opacity-50" />
             <ParallaxSection speed={0.5} className="absolute inset-0 pointer-events-none">
               <div className="absolute right-0 bottom-0 w-[40%] opacity-10">
                 <Image src="/images/thali.png" alt="" width={600} height={400} className="w-full h-auto mix-blend-lighten" />
@@ -419,20 +479,22 @@ function CateringBanner() {
               <p className="text-cream/60 mb-2 text-lg">{t("5 ರಿಂದ 50 ಜನರಿಗೆ", "For 5 to 50 guests")}</p>
               <p className="text-cream/40 mb-8 text-sm">{t("ಮದುವೆ, ಶ್ರಾದ್ಧ, ಹಬ್ಬ, ಪಾರ್ಟಿ — ಯಾವುದೇ ಸಮಾರಂಭಕ್ಕೆ", "Weddings, pujas, office events, parties — for any occasion")}</p>
               <motion.div animate={{ y: [0, -5, 0] }} transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}>
-                <Link
-                  href="/catering"
-                  className="group bg-saffron hover:bg-saffron-light text-brown text-sm font-semibold rounded-full pl-6 pr-2 py-2.5 inline-flex items-center gap-3 transition-all duration-300"
-                >
-                  <div className="text-roll-container">
-                    <div className="text-roll-inner">
-                      <span className="h-[20px] flex items-center">{t("ವಿಚಾರಿಸಿ", "Enquire Now")}</span>
-                      <span className="h-[20px] flex items-center">{t("Enquire Now", "Get Quote")}</span>
+                <MagneticWrapper>
+                  <Link
+                    href="/catering"
+                    className="group bg-saffron hover:bg-saffron-light text-brown text-sm font-semibold rounded-full pl-6 pr-2 py-2.5 inline-flex items-center gap-3 transition-all duration-300"
+                  >
+                    <div className="text-roll-container">
+                      <div className="text-roll-inner">
+                        <span className="h-[20px] flex items-center">{t("ವಿಚಾರಿಸಿ", "Enquire Now")}</span>
+                        <span className="h-[20px] flex items-center">{t("Enquire Now", "Get Quote")}</span>
+                      </div>
                     </div>
-                  </div>
-                  <span className="w-7 h-7 bg-brown/10 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
-                    <ArrowRight size={14} />
-                  </span>
-                </Link>
+                    <span className="w-7 h-7 bg-brown/10 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
+                      <ArrowRight size={14} />
+                    </span>
+                  </Link>
+                </MagneticWrapper>
               </motion.div>
             </div>
           </div>
@@ -481,9 +543,13 @@ export default function Home() {
       <PageTransition>
         <main>
           <HeroSection />
+          <MarqueeBanner />
           <FoodImageStrip />
+          <WaveDivider color="#FFF8F0" />
           <TodayMenuStrip />
+          <WaveDivider color="rgba(255,255,255,0.6)" flip />
           <HowItWorks />
+          <WaveDivider color="rgba(255,255,255,0.6)" />
           <ServeSection />
           <CateringBanner />
         </main>

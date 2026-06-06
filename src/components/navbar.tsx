@@ -8,7 +8,7 @@ import { Menu, X, Phone, User } from "lucide-react";
 import { WHATSAPP_URL } from "@/lib/menu-data";
 import { useLang, LangToggle } from "@/lib/language-context";
 import { WhatsAppIcon } from "./icons";
-import { BottomNavItem } from "./motion";
+import { BottomNavItem, MagneticWrapper } from "./motion";
 
 const NAV_LINKS_KN = [
   { href: "/", label: "ಮನೆ" },
@@ -60,53 +60,60 @@ export function Navbar() {
             {/* Desktop nav */}
             <div className="hidden md:flex items-center gap-6">
               {links.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="text-sm text-brown hover:text-maroon transition-colors duration-300"
-                >
-                  {l.label}
-                </Link>
+                <MagneticWrapper key={l.href}>
+                  <Link
+                    href={l.href}
+                    className="text-sm text-brown hover:text-maroon transition-colors duration-300 px-2 py-1"
+                  >
+                    {l.label}
+                  </Link>
+                </MagneticWrapper>
               ))}
             </div>
 
             {/* Desktop right side */}
             <div className="hidden md:flex items-center gap-3">
-              <LangToggle />
-              <Link
-                href="/login"
-                className="text-[13px] text-brown-light/60 flex items-center gap-1.5 hover:text-maroon transition-colors"
-              >
-                <User size={13} />
-                {t("ಲಾಗಿನ್", "Login")}
-              </Link>
-              <a
-                href="tel:+919980864037"
-                className="text-[13px] text-brown-light/60 flex items-center gap-1.5 hover:text-maroon transition-colors"
-              >
-                <Phone size={13} />
-                +91 99808 64037
-              </a>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group bg-maroon text-white text-[13px] font-medium rounded-full pl-5 pr-2 py-2 flex items-center gap-2 hover:bg-maroon-light transition-all duration-300"
-              >
-                <div className="text-roll-container">
-                  <div className="text-roll-inner">
-                    <span className="h-[20px] flex items-center">
-                      {t("ಆರ್ಡರ್ ಮಾಡಿ", "Order Now")}
-                    </span>
-                    <span className="h-[20px] flex items-center">
-                      {t("Order Now", "ಆರ್ಡರ್ ಮಾಡಿ")}
-                    </span>
+              <MagneticWrapper><LangToggle /></MagneticWrapper>
+              <MagneticWrapper>
+                <Link
+                  href="/login"
+                  className="text-[13px] text-brown-light/60 flex items-center gap-1.5 hover:text-maroon transition-colors px-2 py-1"
+                >
+                  <User size={13} />
+                  {t("ಲಾಗಿನ್", "Login")}
+                </Link>
+              </MagneticWrapper>
+              <MagneticWrapper>
+                <a
+                  href="tel:+919980864037"
+                  className="text-[13px] text-brown-light/60 flex items-center gap-1.5 hover:text-maroon transition-colors px-2 py-1"
+                >
+                  <Phone size={13} />
+                  +91 99808 64037
+                </a>
+              </MagneticWrapper>
+              <MagneticWrapper>
+                <a
+                  href={WHATSAPP_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group bg-maroon text-white text-[13px] font-medium rounded-full pl-5 pr-2 py-2 flex items-center gap-2 hover:bg-maroon-light transition-all duration-300"
+                >
+                  <div className="text-roll-container">
+                    <div className="text-roll-inner">
+                      <span className="h-[20px] flex items-center">
+                        {t("ಆರ್ಡರ್ ಮಾಡಿ", "Order Now")}
+                      </span>
+                      <span className="h-[20px] flex items-center">
+                        {t("Order Now", "ಆರ್ಡರ್ ಮಾಡಿ")}
+                      </span>
+                    </div>
                   </div>
-                </div>
-                <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
-                  <WhatsAppIcon size={14} />
-                </span>
-              </a>
+                  <span className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-rotate-45">
+                    <WhatsAppIcon size={14} />
+                  </span>
+                </a>
+              </MagneticWrapper>
             </div>
 
             {/* Mobile: lang toggle + hamburger */}
@@ -202,14 +209,18 @@ export function BottomNav() {
 
 export function FloatingWhatsApp() {
   return (
-    <a
-      href={WHATSAPP_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-20 md:bottom-6 right-4 z-40 bg-[#25D366] hover:bg-[#20BD5A] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all animate-pulse-glow"
-      aria-label="Chat on WhatsApp"
-    >
-      <WhatsAppIcon size={28} />
-    </a>
+    <div className="fixed bottom-20 md:bottom-6 right-4 z-40">
+      <MagneticWrapper>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-[#25D366] hover:bg-[#20BD5A] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all animate-pulse-glow"
+          aria-label="Chat on WhatsApp"
+        >
+          <WhatsAppIcon size={28} />
+        </a>
+      </MagneticWrapper>
+    </div>
   );
 }

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Navbar, BottomNav, FloatingWhatsApp } from "@/components/navbar";
 import { WhatsAppIcon } from "@/components/icons";
 import { useLang } from "@/lib/language-context";
-import { motion, AnimatePresence, MotionReveal, PageTransition, ScrollProgress, RippleButton } from "@/components/motion";
+import { motion, AnimatePresence, MotionReveal, PageTransition, ScrollProgress, RippleButton, MagneticWrapper, GlowCard, TextReveal } from "@/components/motion";
 import { springSnappy, rockingVariant } from "@/lib/animations";
 import {
   MENU, MEAL_LABELS, DAYS, DAYS_KN, getTodayIndex,
@@ -21,12 +21,18 @@ export default function MenuPage() {
   const [day, setDay] = useState<DayIndex>(todayIdx);
   const [meal, setMeal] = useState<MealType>("lunch");
   const [cart, setCart] = useState<MenuItem[]>([]);
+  const [toast, setToast] = useState<{ id: number; message: string } | null>(null);
 
   const items = MENU[meal][day];
   const info = MEAL_LABELS[meal];
 
   function addToCart(item: MenuItem) {
-    setCart((prev) => [...prev, item]);
+    if (!cart.some(c => c.kn === item.kn)) {
+      setCart((prev) => [...prev, item]);
+      const id = Date.now();
+      setToast({ id, message: lang === "kn" ? `${item.kn} ಸೇರಿಸಲಾಗಿದೆ` : `Added ${item.en}` });
+      setTimeout(() => setToast(current => current?.id === id ? null : current), 3000);
+    }
   }
 
   const orderText = `ನಮಸ್ಕಾರ 🙏\n${DAYS[day]} ${info.en} order:\n${cart.map((i) => `• ${i.en}${i.qty ? ` (${i.qty})` : ""}`).join("\n")}\n\nName:\nAddress:\nPhone:`;
@@ -48,7 +54,9 @@ export default function MenuPage() {
                 </span>
               </div>
               <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
-                {t(<>ನಮ್ಮ <span className="text-saffron">ಮೆನು</span></>, <>Our <span className="text-saffron">Menu</span></>)}
+                <TextReveal>
+                  {t(<>ನಮ್ಮ <span className="text-saffron">ಮೆನು</span></>, <>Our <span className="text-saffron">Menu</span></>)}
+                </TextReveal>
               </h1>
               <p className="text-sm text-brown-light/50 mt-2">
                 {t("ದಿನ ಮತ್ತು ಊಟ ಆಯ್ಕೆ ಮಾಡಿ", "Select day and meal to see the full menu")}
@@ -156,6 +164,7 @@ export default function MenuPage() {
                         transition={{ ...springSnappy, delay: i * 0.06 }}
                         className="will-change-transform"
                       >
+                        <GlowCard className="rounded-2xl">
                         <motion.div
                           whileHover={{ y: -6, boxShadow: "0 16px 32px rgba(0,0,0,0.08)" }}
                           whileTap={{ scale: 0.97 }}
@@ -187,6 +196,7 @@ export default function MenuPage() {
                             </div>
                           </Card>
                         </motion.div>
+                        </GlowCard>
                       </motion.div>
                     );
                   })
@@ -215,15 +225,34 @@ export default function MenuPage() {
                       <motion.button whileTap={{ scale: 0.95 }} onClick={() => setCart([])} className="text-xs text-brown-light/50 hover:text-maroon px-3 py-2 rounded-full transition-colors">
                         {t("ತೆಗೆ", "Clear")}
                       </motion.button>
-                      <Link
-                        href={`/order?day=${day}&meal=${meal}&items=${encodeURIComponent(JSON.stringify(cart))}`}
-                        className="bg-forest hover:bg-forest-light text-white text-sm font-medium rounded-full px-5 py-2.5 flex items-center gap-2 transition-all duration-300"
-                      >
-                        <ShoppingCart size={14} />
-                        {t("ಆರ್ಡರ್ ಮಾಡಿ", "Proceed to Order")}
-                      </Link>
+                      <MagneticWrapper>
+                        <Link
+                          href={`/order?day=${day}&meal=${meal}&items=${encodeURIComponent(JSON.stringify(cart))}`}
+                          className="bg-forest hover:bg-forest-light text-white text-sm font-medium rounded-full px-5 py-2.5 flex items-center gap-2 transition-all duration-300"
+                        >
+                          <ShoppingCart size={14} />
+                          {t("ಆರ್ಡರ್ ಮಾಡಿ", "Proceed to Order")}
+                        </Link>
+                      </MagneticWrapper>
                     </div>
                   </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {/* Toast Notification */}
+            <AnimatePresence>
+              {toast && (
+                <motion.div
+                  key={toast.id}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 20, scale: 0.9 }}
+                  className="fixed bottom-36 md:bottom-24 right-4 sm:right-8 z-[100] bg-forest text-white px-5 py-3 rounded-xl shadow-xl flex items-center gap-3 pointer-events-none"
+                >
+                  <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                    <span className="text-xs">✓</span>
+                  </div>
+                  <span className="font-medium text-sm">{toast.message}</span>
                 </motion.div>
               )}
             </AnimatePresence>

@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Navbar, BottomNav } from "@/components/navbar";
 import { WhatsAppIcon } from "@/components/icons";
 import { useLang } from "@/lib/language-context";
-import { motion, AnimatePresence, Confetti, PageTransition, ScrollProgress, MorphButton } from "@/components/motion";
+import { motion, AnimatePresence, Confetti, PageTransition, ScrollProgress, MorphButton, MagneticWrapper } from "@/components/motion";
 import { springBouncy, springSnappy, BRAND_COLORS } from "@/lib/animations";
 import {
   MENU, MEAL_LABELS, DAYS, DAYS_KN, getTodayIndex,
@@ -117,12 +117,16 @@ function OrderForm() {
                 <WhatsAppIcon size={36} className="text-[#25D366] mx-auto block mb-6" />
               </motion.div>
               <div className="space-y-3">
-                <Link href="/" className="block bg-maroon text-white rounded-full py-3 font-medium hover:bg-maroon-light transition-colors">
-                  {t("← ಮನೆಗೆ ಹೋಗಿ", "← Go Home")}
-                </Link>
-                <button onClick={() => setSubmitted(false)} className="block w-full text-sm text-brown-light/50 hover:text-maroon transition-colors py-2">
-                  {t("ಮತ್ತೊಂದು ಆರ್ಡರ್", "Place another order")}
-                </button>
+                <MagneticWrapper className="w-full">
+                  <Link href="/" className="block bg-maroon text-white rounded-full py-3 font-medium hover:bg-maroon-light transition-colors w-full">
+                    {t("← ಮನೆಗೆ ಹೋಗಿ", "← Go Home")}
+                  </Link>
+                </MagneticWrapper>
+                <MagneticWrapper className="w-full">
+                  <button onClick={() => setSubmitted(false)} className="block w-full text-sm text-brown-light/50 hover:text-maroon transition-colors py-2">
+                    {t("ಮತ್ತೊಂದು ಆರ್ಡರ್", "Place another order")}
+                  </button>
+                </MagneticWrapper>
               </div>
             </motion.div>
           </Card>
@@ -140,9 +144,11 @@ function OrderForm() {
   return (
     <div className="max-w-3xl mx-auto px-5 sm:px-8">
       <MotionReveal type="fade-up">
-        <Link href="/menu" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-4">
-          <ArrowLeft size={14} /> {t("ಮೆನು ಗೆ ಹೋಗಿ", "Back to Menu")}
-        </Link>
+        <MagneticWrapper>
+          <Link href="/menu" className="inline-flex items-center gap-1 text-sm text-brown-light/50 hover:text-maroon transition-colors mb-4 px-2 py-1">
+            <ArrowLeft size={14} /> {t("ಮೆನು ಗೆ ಹೋಗಿ", "Back to Menu")}
+          </Link>
+        </MagneticWrapper>
         <h1 className="text-[clamp(1.75rem,5vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em] text-brown">
           {t(<>ಆರ್ಡರ್ <span className="text-saffron">ಮಾಡಿ</span></>, <>Place <span className="text-saffron">Order</span></>)}
         </h1>
@@ -277,17 +283,19 @@ function OrderForm() {
 
             {/* The hero button — morph */}
             <div className="relative w-full flex justify-center">
-              <MorphButton
-                type="submit"
-                disabled={!name || !phone || !address || submitting}
-                isSubmitted={submitted}
-                isSubmitting={submitting}
-                successText={t("ಆರ್ಡರ್ ಕಳಿಸಲಾಗಿದೆ!", "Order Sent!")}
-                className="group relative w-full bg-forest hover:bg-forest-light disabled:bg-brown-light/20 disabled:cursor-not-allowed text-white font-semibold rounded-full py-3.5 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-forest/20 overflow-hidden"
-              >
-                <WhatsAppIcon size={20} />
-                {t("WhatsApp ನಲ್ಲಿ ಆರ್ಡರ್ ಕಳಿಸಿ", "Send Order via WhatsApp")}
-              </MorphButton>
+              <MagneticWrapper className="w-full">
+                <MorphButton
+                  type="submit"
+                  disabled={!name || !phone || !address || submitting}
+                  isSubmitted={submitted}
+                  isSubmitting={submitting}
+                  successText={t("ಆರ್ಡರ್ ಕಳಿಸಲಾಗಿದೆ!", "Order Sent!")}
+                  className="group relative w-full bg-forest hover:bg-forest-light disabled:bg-brown-light/20 disabled:cursor-not-allowed text-white font-semibold rounded-full py-3.5 flex items-center justify-center gap-3 transition-all duration-300 shadow-lg shadow-forest/20 overflow-hidden"
+                >
+                  <WhatsAppIcon size={20} />
+                  {t("WhatsApp ನಲ್ಲಿ ಆರ್ಡರ್ ಕಳಿಸಿ", "Send Order via WhatsApp")}
+                </MorphButton>
+              </MagneticWrapper>
             </div>
 
             <p className="text-center text-xs text-brown-light/40 mt-3">

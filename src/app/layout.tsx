@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Noto_Sans_Kannada } from "next/font/google";
 import { LangProvider } from "@/lib/language-context";
+import { CustomCursor } from "@/components/motion";
 import "./globals.css";
 
 const geist = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
+});
+
+const notoKannada = Noto_Sans_Kannada({
+  variable: "--font-kannada",
+  subsets: ["kannada"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="kn" className={`${geist.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="kn" className={`${geist.variable} ${notoKannada.variable} h-full antialiased`} suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-cream relative" suppressHydrationWarning>
         {/* Global logo watermark — fixed center, mildly visible */}
         <div
@@ -32,12 +40,13 @@ export default function RootLayout({
           <img
             src="/images/logo1.png"
             alt=""
-            className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full object-cover opacity-[0.07]"
+            className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full object-cover opacity-[0.12]"
           />
         </div>
         <LangProvider>
           <div className="relative z-10 flex flex-col min-h-full">{children}</div>
         </LangProvider>
+        <CustomCursor />
       </body>
     </html>
   );
