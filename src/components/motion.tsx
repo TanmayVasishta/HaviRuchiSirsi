@@ -537,32 +537,33 @@ export function TiltCard({ children, className = "" }: { children: ReactNode; cl
 // ─── FLOATING PARTICLES ───
 export function FloatingParticles({ count = 10, className = "" }: { count?: number; className?: string }) {
   const reduced = useReducedMotion();
-  if (reduced) return null;
+  const [particles, setParticles] = useState<{ w: number; h: number; left: number; top: number; x: number; dur: number; delay: number }[]>([]);
+
+  useEffect(() => {
+    setParticles(
+      Array.from({ length: count }).map(() => ({
+        w: Math.random() * 20 + 10,
+        h: Math.random() * 20 + 10,
+        left: Math.random() * 100,
+        top: 100 + Math.random() * 20,
+        x: Math.random() * 100 - 50,
+        dur: Math.random() * 10 + 15,
+        delay: Math.random() * 10,
+      }))
+    );
+  }, [count]);
+
+  if (reduced || particles.length === 0) return null;
 
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden ${className}`}>
-      {Array.from({ length: count }).map((_, i) => (
+      {particles.map((p, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full bg-saffron/30 blur-[2px]"
-          style={{
-            width: Math.random() * 20 + 10,
-            height: Math.random() * 20 + 10,
-            left: `${Math.random() * 100}%`,
-            top: `${100 + Math.random() * 20}%`,
-          }}
-          animate={{
-            y: [0, -800],
-            x: [0, Math.random() * 100 - 50],
-            opacity: [0, 0.8, 0],
-            rotate: [0, 180],
-          }}
-          transition={{
-            duration: Math.random() * 10 + 15,
-            repeat: Infinity,
-            delay: Math.random() * 10,
-            ease: "linear",
-          }}
+          style={{ width: p.w, height: p.h, left: `${p.left}%`, top: `${p.top}%` }}
+          animate={{ y: [0, -800], x: [0, p.x], opacity: [0, 0.8, 0], rotate: [0, 180] }}
+          transition={{ duration: p.dur, repeat: Infinity, delay: p.delay, ease: "linear" }}
         />
       ))}
     </div>
