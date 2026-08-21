@@ -10,7 +10,7 @@ npm install
 npm run dev
 ```
 
-Open [https://havi-ruchi-sirsi.vercel.app/]([http://localhost:3000](https://havi-ruchi-sirsi.vercel.app/)).
+Open [https://havi-ruchi-sirsi.vercel.app/]([http://localhost:3000](https://havi-ruchi-sirsi.vercel.app/))
 
 ## Pages
 
