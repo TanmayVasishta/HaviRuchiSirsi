@@ -1,6 +1,10 @@
 # ಹವಿ ರುಚಿ ಕಿಚನ್ | Havi Ruchi Kitchen
 
-Traditional Havyaka home-cooked food delivery — Sirsi, Karnataka.
+> Traditional Havyaka home-cooked food delivery — Sirsi, Karnataka.
+
+🌐 **Live:** [havi-ruchi-sirsi.vercel.app](https://havi-ruchi-sirsi.vercel.app/)
+
+---
 
 ## Quick Start
 
@@ -10,7 +14,9 @@ npm install
 npm run dev
 ```
 
-Open [https://havi-ruchi-sirsi.vercel.app/]([http://localhost:3000](https://havi-ruchi-sirsi.vercel.app/))
+Open [http://localhost:3000](http://localhost:3000)
+
+---
 
 ## Pages
 
@@ -22,22 +28,31 @@ Open [https://havi-ruchi-sirsi.vercel.app/]([http://localhost:3000](https://havi
 | `/admin` | Dashboard — orders, regular customers, stats (password: `haviruchi2024`) |
 | `/catering` | Catering enquiry form — WhatsApp deep link |
 
+---
+
 ## Stack
 
-- **Next.js 16** (App Router, Turbopack)
-- **Tailwind CSS 4** + **shadcn/ui**
-- **TypeScript**
-- **Vercel** deployment ready
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Styling | Tailwind CSS 4 + shadcn/ui |
+| Language | TypeScript |
+| Hosting | Vercel |
+
+---
 
 ## Deploy
 
 ```bash
 npm run build
-# or push to GitHub and connect to Vercel
 ```
+
+Or push to GitHub and connect to [Vercel](https://vercel.com) — zero config needed.
+
+---
 
 ## Notes
 
-- WhatsApp ordering actually works — it opens `wa.me/919980864037` with pre-filled messages
-- Menu data is hardcoded in `src/lib/menu-data.ts` — rotate weekly
-- Admin password is hardcoded for prototype — replace with Supabase auth for production
+- **WhatsApp ordering works** — opens `wa.me/919980864037` with a pre-filled order message.
+- **Menu data** is hardcoded in `src/lib/menu-data.ts` — rotate weekly as needed.
+- **Admin password** is hardcoded for prototype use — replace with Supabase Auth before going to production.
