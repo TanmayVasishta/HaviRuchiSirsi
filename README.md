@@ -1,22 +1,9 @@
 # ಹವಿ ರುಚಿ ಕಿಚನ್ | Havi Ruchi Kitchen
 
 > Traditional Havyaka home-cooked food delivery — Sirsi, Karnataka.
+This is the original prototype of haviruchi
 
 🌐 **Live:** [havi-ruchi-sirsi.vercel.app](https://havi-ruchi-sirsi.vercel.app/)
-
----
-
-## Quick Start
-
-```bash
-cd haviruchi-website
-npm install
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000)
-
----
 
 ## Pages
 
